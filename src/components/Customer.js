@@ -3,10 +3,15 @@ import React from 'react';
 class Customer extends React.Component {
     render() {
         return(
-            <div>
-                <CustomerProfile id={this.props.id} image={this.props.image} name={this.props.name}/>
-                <CustomerInfo birthday={this.props.birthday} gender={this.props.gender} job={this.props.job}/>
-            </div>
+            <tr>
+                {/* <CustomerProfile rank={this.props.rank} name={this.props.name}/>
+                <CustomerInfo work1={this.props.work1} work2={this.props.work2} work3={this.props.work3}/> */}
+                <td>{this.props.rank}</td>
+                <td>{this.props.name}</td>
+                <td>{this.props.work1}</td>
+                <td>{this.props.work2}</td>
+                <td>{this.props.work3}</td>
+            </tr>
         )
     }
 }
@@ -15,8 +20,8 @@ class CustomerProfile extends React.Component {
     render(){
         return(
             <div>
-                <img src={this.props.imgae} alt="profile"/>
-                <h2>{this.props.name}({this.props.id})</h2>
+                <td>{this.props.rank})</td>
+                <td>{this.props.name}</td>
             </div>
         )
     }
@@ -26,9 +31,9 @@ class CustomerInfo extends React.Component {
     render(){
         return(
             <div>
-                <p>{this.props.birthday}</p>
-                <p>{this.props.gender}</p>
-                <p>{this.props.job}</p>
+                <tr>{this.props.work1}</tr>
+                <tr>{this.props.work2}</tr>
+                <tr>{this.props.work3}</tr>
             </div> 
         )
     }

@@ -1,5 +1,6 @@
 import './App.css';
 import React, { Component } from 'react';
+import axios from 'axios';
 import Customer from './components/Customer'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from 'react-bootstrap/Navbar';
@@ -10,32 +11,27 @@ import FormControl from 'react-bootstrap/FormControl';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import Table from 'react-bootstrap/Table';
 
-const customers = [{
-  'rank' : 1,
-  'name' : '홍길동',
-  'work1' : '개념원리',
-  'work2' : '고쟁이',
-  'work3' : 'TEST'
-},
-{
-  'rank' : 2,
-  'name' : '한성희',
-  'work1' : '개념원리',
-  'work2' : '고쟁이',
-  'work3' : 'TEST'
-},
-{
-  'rank' : 3,
-  'name' : '이순신',
-  'work1' : '개념원리',
-  'work2' : '고쟁이',
-  'work3' : 'TEST'
-}
-]
-
 class App extends Component {
+
+  state = {
+    customers: ""
+  }
+
+  componentDidMount() {
+    this.callApi()
+      .then(res => this.setState({customers: res}))
+      .catch(err => console.log(err));
+  }
+
+  callApi = async () => {
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    return body;
+  }
+
   render() 
   {
+    const { classes } = this.props;
     return (
       <main>
         <div>
@@ -67,7 +63,9 @@ class App extends Component {
             </tr>
           </thead>
           <tbody>
-            {customers.map(c => { return ( <Customer key={c.name} rank={c.rank} name={c.name} work1={c.work1} work2={c.work2} work3={c.work3} />)})}
+            {this.state.customers ? this.state.customers.map(c => {
+              return ( <Customer key={c.name} rank={c.rank} name={c.name} work1={c.work1} work2={c.work2} work3={c.work3} />)
+            }) : ""}
           </tbody>
         </Table>
         </div>

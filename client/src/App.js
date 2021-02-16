@@ -64,7 +64,7 @@ class App extends Component {
           </thead>
           <tbody>
             {this.state.customers ? this.state.customers.map(c => {
-              return ( <Customer key={c.name} rank={c.rank} name={c.name} work1={c.work1} work2={c.work2} work3={c.work3} />)
+              return ( <Customer rank={c.rank} name={c.name} task={c.task} volume={c.volume} check={c.check} />)
             }) : ""}
           </tbody>
         </Table>

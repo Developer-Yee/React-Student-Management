@@ -6,9 +6,9 @@ class Customer extends React.Component {
             <tr>
                 <td>{this.props.rank}</td>
                 <td>{this.props.name}</td>
-                <td>{this.props.work1}</td>
-                <td>{this.props.work2}</td>
-                <td>{this.props.work3}</td>
+                <td>{this.props.task}</td>
+                <td>{this.props.volume}</td>
+                <td>{this.props.check}</td>
             </tr>
         )
     }

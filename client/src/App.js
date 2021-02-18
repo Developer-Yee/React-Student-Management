@@ -1,7 +1,7 @@
 import './App.css';
 import React, { Component } from 'react';
-import axios from 'axios';
-import Customer from './components/Customer'
+import CustomerAdd from './components/CustomerAdd';
+import Customer from './components/Customer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
@@ -13,8 +13,22 @@ import Table from 'react-bootstrap/Table';
 
 class App extends Component {
 
-  state = {
-    customers: ""
+  constructor(props) {
+    super(props);
+    this.state = {
+      customers: '',
+      completed: 0
+    }
+  }
+
+  stateRefresh = () => {
+    this.setState({
+      customers: '',
+      completed: 0
+    });
+    this.callApi()
+      .then(res => this.setState({customers: res}))
+      .catch(err => console.log(err));
   }
 
   componentDidMount() {
@@ -68,6 +82,9 @@ class App extends Component {
             }) : ""}
           </tbody>
         </Table>
+        </div>
+        <div>
+          <CustomerAdd stateRefresh={this.stateRefresh}/>
         </div>
       </main>
     );

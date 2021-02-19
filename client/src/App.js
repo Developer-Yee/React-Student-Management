@@ -17,14 +17,16 @@ class App extends Component {
     super(props);
     this.state = {
       customers: '',
-      completed: 0
+      completed: 0,
+      searchKeyword: ''
     }
   }
 
   stateRefresh = () => {
     this.setState({
       customers: '',
-      completed: 0
+      completed: 0,
+      searchKeyword: ''
     });
     this.callApi()
       .then(res => this.setState({customers: res}))
@@ -43,8 +45,22 @@ class App extends Component {
     return body;
   }
 
+  handleValueChange = (e) => {
+    let nextState = {};
+    nextState[e.target.name] = e.target.value;
+    this.setState(nextState);
+  }
+
   render() 
   {
+    const filteredComponents = (data) => {
+      data = data.filter((c) => {
+        return c.name.indexOf(this.state.searchKeyword) > -1;
+      });
+      return data.map(c => {
+        return ( <Customer stateRefresh={this.stateRefresh} rank={c.rank} name={c.name} task={c.task} volume={c.volume} check={c.check} />)
+      });
+    }
     const { classes } = this.props;
     return (
       <main>
@@ -57,8 +73,7 @@ class App extends Component {
             <Nav.Link href="#management">관리</Nav.Link>
           </Nav>
           <Form inline>
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            <Button variant="outline-info">Search</Button>
+            <FormControl type="text" placeholder="Search" className="mr-sm-2" name="searchKeyword" value={this.state.searchKeyword} onChange={this.handleValueChange}/>
           </Form>
         </Navbar>
         <Breadcrumb>
@@ -78,9 +93,7 @@ class App extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.customers ? this.state.customers.map(c => {
-              return ( <Customer stateRefresh={this.stateRefresh} rank={c.rank} name={c.name} task={c.task} volume={c.volume} check={c.check} />)
-            }) : ""}
+            {this.state.customers ? filteredComponents(this.state.customers) : ""}
           </tbody>
         </Table>
         </div>

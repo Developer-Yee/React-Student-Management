@@ -30,7 +30,7 @@ app.get('/api/customers', (req, res) => {
 });
 
 app.post('/api/customers', (req, res) => {
-  let sql = 'INSERT INTO student VALUES(?, ?, ?, null, null, null, 0, now())';
+  let sql = 'INSERT INTO student VALUES(?, ?, ?, null, null, null, 0, now(), null)';
   let name = req.body.name;
   let grade = req.body.grade;
   let rank = req.body.rank;

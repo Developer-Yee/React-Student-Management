@@ -1,0 +1,110 @@
+body {
+  position: relative;
+}
+
+.setting {
+  position: absolute;
+  margin-left: 70%;
+  cursor: pointer;
+}
+
+.yee {
+  cursor: pointer;
+  margin-left: 10%;
+}
+/* .class_name {
+} */
+.setting:hover {
+  color: white;
+}
+
+/* .setting:hover: class_name {
+  display: block;
+} */
+
+.plus {
+  padding: 100px;
+}
+
+.bt {
+  margin-left: 45%;
+}
+
+.answer {
+  /* display: none; */
+  padding-bottom: 30px;
+}
+#faq-title {
+  font-size: 25px;
+}
+.faq-content {
+  border: 1px solid #e0e0e0;
+}
+.question {
+  font-size: 15px;
+  padding: 15px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: #ebecef;
+  width: 100%;
+  text-align: left;
+  color: #6e757c;
+}
+.question:hover {
+  color: #2962ff;
+}
+[id$="-toggle"] {
+  margin-right: 15px;
+}
+.add_student {
+  color: #6e757c;
+  margin-top: 30px;
+}
+.post {
+  margin-top: 10px;
+  padding-left: 60px;
+  padding-right: 60px;
+  background-color: #4d535a;
+  color: white;
+}
+
+.name_1 {
+  background-color: none;
+  border: #ebecef;
+  border-bottom: solid 1px #8d97a0;
+  outline: none;
+}
+
+.student_name {
+  margin-left: 105px;
+  color: #4d535a;
+}
+
+.gr {
+  color: #4d535a;
+}
+.gr_1 {
+  padding-right: 10px;
+}
+.p_1 {
+  padding: 10px;
+}
+.table_1 {
+  margin-top: 10px;
+  width: 100%;
+  font-size: 18px;
+  color: #4d535a;
+}
+.bt {
+  background-color: #e41134;
+  color: white;
+  border: none;
+  border-radius: 6px;
+}
+td {
+  padding-left: 20px;
+}
+tr {
+  border-bottom: solid 1px #8d97a0;
+}

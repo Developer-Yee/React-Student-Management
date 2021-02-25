@@ -7,8 +7,7 @@ class CustomerDelete extends React.Component {
         fetch(url, {
             method: 'DELETE'
         });
-        alert(name);
-        // this.props.stateRefersh();
+        this.props.stateRefresh();
     }
 
     render() {

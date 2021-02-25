@@ -15,7 +15,6 @@ class CustomerAdd extends React.Component {
         e.preventDefault()
         this.addCustomer()
             .then((response) => {
-                // console.log(response.data);
                 this.props.stateRefresh();
             })
         this.setState({
@@ -44,8 +43,19 @@ class CustomerAdd extends React.Component {
         return (
             <form onSubmit={this.handleFormSubmit}>
                 <h1>고객 추가</h1>
+                학년:
+                <select name='grade' value={this.state.grade} onChange={this.handleValueChange}>
+                    <option>학년</option>
+                    <option value='고1'>고1</option>
+                    <option value='고2'>고2</option>
+                    <option value='고3'>고3</option>
+                    <option value='중1'>중1</option>
+                    <option value='중1'>중1</option>
+                    <option value='중1'>중1</option>
+                </select>
+                <br/>
                     이름: <input type="text" name="name" value={this.state.name} onChange={this.handleValueChange} /><br/>
-                    학년: <input type="text" name="grade" value={this.state.grade} onChange={this.handleValueChange} /><br/>
+                    {/* 학년: <input type="text" name="grade" value={this.state.grade} onChange={this.handleValueChange} /><br/> */}
                     반: <input type="text" name="rank" value={this.state.rank} onChange={this.handleValueChange} /><br/>
                     <button type="submit">추가하기</button>
             </form>        

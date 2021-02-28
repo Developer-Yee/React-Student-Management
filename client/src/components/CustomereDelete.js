@@ -12,7 +12,10 @@ class CustomerDelete extends React.Component {
 
     render() {
         return (
-            <button onClick={(e) => {this.deleteCustomer(this.props.name)}}>삭제</button>
+            <tr>
+                <td>{this.props.name}</td>
+                <td><button onClick={(e) => {this.deleteCustomer(this.props.name)}}>삭제</button></td>
+            </tr>
         )
     }
 }

@@ -51,7 +51,7 @@ class Main extends Component {
         });
         return data.map(c => {
             if(c.grade == grade)
-                return ( <Customer stateRefresh={this.stateRefresh} rank={c.rank} name={c.name} task={c.task} volume={c.volume} isChecked={c.isChecked}/>)
+                return ( <Customer stateRefresh={this.stateRefresh} newrank={c.newrank} name={c.name} task={c.task} volume={c.volume} isChecked={c.isChecked}/>)
         });
       }
       return(
@@ -72,7 +72,7 @@ class Main extends Component {
                 <th>이름</th>
                 <th></th>
                 <th>과제</th>
-                <th></th>
+                <th>범위</th>
               </tr>
             </thead>
             <tbody>
@@ -89,7 +89,7 @@ class Main extends Component {
                 <th>이름</th>
                 <th></th>
                 <th>과제</th>
-                <th></th>
+                <th>범위</th>
               </tr>
             </thead>
             <tbody>
@@ -106,7 +106,7 @@ class Main extends Component {
                 <th>이름</th>
                 <th></th>
                 <th>과제</th>
-                <th></th>
+                <th>범위</th>
               </tr>
             </thead>
             <tbody>

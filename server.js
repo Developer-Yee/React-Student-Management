@@ -16,21 +16,80 @@ const connection = mysql.createConnection({
   user: conf.user,
   password: conf.password,
   port: conf.port,
-  database: conf.database
+  database: conf.database,
+  multipleStatements : true
 });
 connection.connect();
 
 app.get('/api/customers', (req, res) => {
     connection.query(
-      "SELECT * FROM student WHERE isDeleted = 0",
+      "SELECT * FROM student WHERE isDeleted = 0 order by grade, newrank, name, task",
       (err, rows, fields) => {
         res.send(rows);
       }
     );
 });
 
+app.post('/api/customersInformation', (req, res) => {
+  let grade = req.body.grade;
+  let rank = req.body.rank;
+  console.log(grade);
+  console.log(rank);
+  let sql = "SELECT DISTINCT name FROM student WHERE grade ='" + grade + "' AND newrank=" + rank + ";";
+  connection.query(
+    sql,
+    (err, rows, fields) => {
+      res.send(rows);
+    }
+  );
+});
+
+app.post('/api/addGroubtasks', (req, res) => {
+  let grade = req.body.grade;
+  let rank = req.body.rank;
+  let task = req.body.task;
+  let volume = req.body.volume;
+  let name = req.body.name;
+  let params = [name, grade, task, volume, rank];
+  let sql = 'INSERT INTO student VALUES(?, ?, 0, ?, ?, 0, 0, now(), 0, ?)';
+  connection.query(
+    sql, params,
+    (err, rows, fields) => {
+      res.send(rows);
+    }
+  ); 
+});
+
+app.get('/api/customersDelete', (req, res) => {
+  connection.query(
+    "SELECT DISTINCT name FROM student WHERE isDeleted = 0",
+    (err, rows, fields) => {
+      res.send(rows);
+    }
+  );
+});
+
+app.post('/api/addGroubtask', (req, res) => {
+  let grade = req.body.grade;
+  let rank = req.body.rank;
+  let task = req.body.task;
+  let volume = req.body.volume;
+  let params = [task, volume];
+  console.log(params);
+  let sql = 'UPDATE student SET task = "' + task + '" where newrank= ' + rank + ' AND grade= "' + grade + '";';
+  let sql1 = 'UPDATE student SET volume = "' + volume + '" where newrank= ' + rank + ' AND grade= "' + grade + '";';
+  let sql2 = 'UPDATE student SET isChecked = 0 where newrank= ' + rank + ' AND grade= "' + grade + '";';
+
+  console.log(sql + sql1 + sql2);
+  connection.query(sql + sql1 + sql2,
+    (err, rows, fields) => {
+      res.send(rows);
+    }
+  );
+});
+
 app.post('/api/customers', (req, res) => {
-  let sql = 'INSERT INTO student VALUES(?, ?, ?, null, null, null, 0, now(), null)';
+  let sql = 'INSERT INTO student VALUES(?, ?, 0, null, null, null, 0, now(), 0, ?)';
   let name = req.body.name;
   let grade = req.body.grade;
   let rank = req.body.rank;

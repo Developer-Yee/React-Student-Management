@@ -1,8 +1,9 @@
 import React from 'react';
 import {post} from 'axios';
 import stateRefresh from './Main';
-import {Card, InputGroup, FormControl} from 'react-bootstrap';
+import {Card, InputGroup, FormControl, Navbar, Form} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import CustomerDelete from './components/CustomereDelete';
 import './Management.css';
 
 class Management extends React.Component {
@@ -13,22 +14,84 @@ class Management extends React.Component {
             name: "",
             grade: "",
             rank: "",
+            task: "",
+            volume: "",
+            customers: "",
             display1: "none",
             display2: "none",
-            display3: "none"
+            display3: "none",
+            completed: 0,
+            searchKeyword: "",
+            option: "",
+            content: ''
         }
     }
 
+    stateRefresh = () => {
+        this.setState({
+          customers: '',
+          completed: 0,
+          searchKeyword: '',
+          content: ''
+        });
+        this.callApi()
+          .then(res => this.setState({customers: res}))
+          .catch(err => console.log(err));
+        
+      }
+    
+      componentDidMount() {
+        this.callApi()
+          .then(res => this.setState({customers: res}))
+          .catch(err => console.log(err));
+      }
+    
+      callApi = async () => {
+        const response = await fetch('/api/customersDelete');
+        const body = await response.json();
+        return body;
+      }
+    
+      handleValueChange = (e) => {
+        let nextState = {};
+        nextState[e.target.name] = e.target.value;
+        this.setState(nextState);
+      }
+
     handleFormSubmit = (e) => {
         e.preventDefault()
-        this.addCustomer()
-            .then((response) => {
-                new stateRefresh();
-            })
+        if(this.state.option == 'addgroubtask'){
+            let _grade = "";
+            let _rank = "";
+            let _task = "";
+            let _volume = "";
+            _grade = this.state.grade;
+            _rank = this.state.rank;
+            _task = this.state.task;
+            _volume = this.state.volume;
+            this.addGroubTask()
+                .then((response) => {
+                    let yee = response.data;
+                    for(let key in yee) {
+                    post('/api/addGroubtasks', {name: yee[key].name, grade : _grade, rank : _rank, task : _task, volume : _volume});
+                    // console.log(yee[key].name);
+                    }
+                    new stateRefresh();
+                })
+            }
+        if(this.state.option == 'addcustomer'){
+            this.addCustomer()
+                .then((response) => {
+                    new stateRefresh();
+                })
+            }
         this.setState({
             name: '',
             grade: '',
-            rank: ''
+            rank: '',
+            volume: '',
+            task: '',
+            option: ''
         })
     }
 
@@ -36,6 +99,19 @@ class Management extends React.Component {
         let nextState = {};
         nextState[e.target.name] = e.target.value;
         this.setState(nextState);
+    }
+
+    addGroubTask = async () => {
+        const url = '/api/customersInformation'
+        return post(url, {grade : this.state.grade, rank : this.state.rank})
+    }
+
+    groubtaskChange = () => {
+        this.state.option = 'addgroubtask';
+    }
+
+    customerChange = () => {
+        this.state.option = 'addcustomer';
     }
 
     addCustomer = () => {
@@ -84,14 +160,14 @@ class Management extends React.Component {
     }
 
     render() {
-
-        <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-      crossorigin="anonymous"
-    />
-
+        const filteredComponents = (data) => {
+            data = data.filter((c) => {
+              return c.name.indexOf(this.state.searchKeyword) > -1;
+            });
+            return data.map(c => {
+                    return ( <CustomerDelete stateRefresh={this.stateRefresh} name={c.name}/>)
+            });
+          }
         return (
             <div>
                 <div class="faq-content">
@@ -100,13 +176,14 @@ class Management extends React.Component {
                     </button>
                 </div>
                 <div class="answer" id="ans-1" style={{display: this.state.display1}}>
-                    <form method="post">
+                    <form onSubmit={this.handleFormSubmit}>
                     <div class="add_student">
                         <center>
                         <span class="gr_2">
                             <span class="gr_1">
                             <span class="gr">학년:</span>
-                            <select>
+                            <select name='grade' value={this.state.grade} onChange={this.handleValueChange}>
+                                <option value="">선택</option>
                                 <option>고1</option>
                                 <option>고2</option>
                                 <option>고3</option>
@@ -116,11 +193,12 @@ class Management extends React.Component {
                             </select>
                             </span>
                             <span class="gr">반:</span>
-                            <select>
-                            <option>1반</option>
-                            <option>2반</option>
-                            <option>3반</option>
-                            <option>4반</option>
+                            <select name='rank' value={this.state.rank} onChange={this.handleValueChange}>
+                            <option value="">선택</option>
+                            <option value='1'>1반</option>
+                            <option value='2'>2반</option>
+                            <option value='3'>3반</option>
+                            <option value='4'>4반</option>
                             </select>
                         </span>
                         </center>
@@ -130,8 +208,9 @@ class Management extends React.Component {
                         <input
                             class="name_1"
                             type="text"
-                            name="text"
+                            name="task"
                             placeholder="과제를 입력하세요! :D"
+                            value={this.state.task} onChange={this.handleValueChange}
                         />
 
                         <br />
@@ -141,15 +220,16 @@ class Management extends React.Component {
                         <center>
                         <input
                             class="name_1"
-                            type="text_1"
-                            name="text"
+                            type="text"
+                            name="volume"
                             placeholder="범위를 입력하세요! :D"
+                            value={this.state.volume} onChange={this.handleValueChange}
                         />
                         </center>
 
                         <br />
                         <center>
-                        <input class="post" type="submit" value="숙제주기" />
+                        <input class="post" type="submit" value="숙제주기" onClick={this.groubtaskChange}/>
                         </center>
                     </div>
                     </form>
@@ -168,6 +248,7 @@ class Management extends React.Component {
                                     <span class="gr">학년:</span>
                                     <select name='grade' value={this.state.grade} onChange={this.handleValueChange}>
                                         <option>학년</option>
+                                        <option value="">선택</option>
                                         <option value='고1'>고1</option>
                                         <option value='고2'>고2</option>
                                         <option value='고3'>고3</option>
@@ -179,9 +260,11 @@ class Management extends React.Component {
                                 <span class="gr">반:</span>
                                     <select name='rank' value={this.state.rank} onChange={this.handleValueChange}>
                                         <option>학년</option>
+                                        <option value="">선택</option>
                                         <option value='1'>1반</option>
                                         <option value='2'>2반</option>
                                         <option value='3'>3반</option>
+                                        <option value='4'>4반</option>
                                     </select>
                                 </span>
                             </center>
@@ -190,7 +273,7 @@ class Management extends React.Component {
                             <center>
                                 <input class="name_1" type="text" name="name" placeholder="이름을 입력하세요! :D" value={this.state.name} onChange={this.handleValueChange} />
                                 <br />
-                                <button class="post" type="submit">추가하기</button>
+                                <button class="post" type="submit" onClick={this.customerChange}>추가하기</button>
                             </center>
                             </div>
                         </form>
@@ -203,18 +286,14 @@ class Management extends React.Component {
                 <span id="que-3-toggle">+</span><span>학생삭제</span>
                 </button>
                 <div class="answer" id="ans-3" style={{display: this.state.display3}}>
+                <Navbar>
+                    <Form class="col text-center">
+                    <FormControl type="text" placeholder="Search" className="mr-sm-2" name="searchKeyword" value={this.state.searchKeyword} onChange={this.handleValueChange}/>
+                    </Form>
+                </Navbar>
                 <table class="table_1">
                     <tr>
-                    <td class="na">학생이름</td>
-                    <td>
-                        <button class="bt"><i class="fas fa-trash-alt"></i></button>
-                    </td>
-                    </tr>
-                    <tr>
-                    <td class="na">학생이름</td>
-                    <td>
-                        <button class="bt"><i class="fas fa-trash-alt"></i></button>
-                    </td>
+                        {this.state.customers ? filteredComponents(this.state.customers) : ""}
                     </tr>
                 </table>
                 </div>

@@ -22,7 +22,7 @@ class Customer extends React.Component {
         var name = this.props.name;
         return(
             <tr>
-                <td>{this.props.rank}</td>
+                <td>{this.props.newrank}</td>
                 <td><Link to={{pathname: `/student/`, state: {name : this.props.name}}} style={{ color: '#000000' }} >{this.props.name}</Link></td>
                 <td></td>
                 <td><span style={highlight}>{this.props.task}</span></td>

@@ -90,21 +90,21 @@ body {
 .p_1 {
   padding: 10px;
 }
-.table_1 {
+/* .table_1 {
   margin-top: 10px;
   width: 100%;
   font-size: 18px;
   color: #4d535a;
-}
+} */
 .bt {
   background-color: #e41134;
   color: white;
   border: none;
   border-radius: 6px;
 }
-td {
+/* td {
   padding-left: 20px;
 }
 tr {
   border-bottom: solid 1px #8d97a0;
-}
+} */
